@@ -17,7 +17,7 @@ jobs:
           node-version: '20'
       - run: npm ci
       - run: npx playwright install --with-deps
-      - run: npx playwright test --reporter=list
+      - run: npx playwright test --reporter=list,html
       - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
