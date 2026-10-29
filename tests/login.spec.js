@@ -1,11 +1,12 @@
 ﻿const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/LoginPage');
+const users = require('../fixtures/users.json');
 
 test.describe('Login tests', () => {
   test('valid login redirects to inventory', async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
-    await loginPage.login('standard_user', 'secret_sauce');
+    await loginPage.login(users.validUser.username, users.validUser.password);
 
     await expect(page).toHaveURL(/inventory.html/);
     await expect(page.locator('.title')).toHaveText('Products');
@@ -14,8 +15,16 @@ test.describe('Login tests', () => {
   test('invalid login shows error message', async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
-    await loginPage.login('invalid_user', 'wrong_password');
+    await loginPage.login(users.invalidUser.username, users.invalidUser.password);
 
     await expect(await loginPage.getError()).toContainText('Epic sadface');
+  });
+
+  test('locked out user sees locked message', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.goto();
+    await loginPage.login(users.lockedUser.username, users.lockedUser.password);
+
+    await expect(await loginPage.getError()).toContainText('locked out');
   });
 });
