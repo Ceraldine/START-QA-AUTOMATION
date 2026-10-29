@@ -33,3 +33,6 @@ npm run report
 ## CI
 
 Tests run automatically on every push and pull request. Reports (Playwright HTML, JUnit, Allure) are uploaded as artifacts on each run.
+## Allure report
+
+https://ceraldine.github.io/START-QA-AUTOMATION/
